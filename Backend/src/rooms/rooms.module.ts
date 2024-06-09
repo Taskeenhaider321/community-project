@@ -13,4 +13,4 @@ import { ChatsModule } from 'src/chats/chats.module';
   controllers: [RoomsController],
   providers: [RoomsService],
 })
-export class RoomsModule { }
+export class RoomsModule {}

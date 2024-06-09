@@ -6,19 +6,16 @@ import { CreateRoomDto } from './dto/create-room.dto';
 
 @Injectable()
 export class RoomsService {
+  constructor(@InjectModel(Room.name) private roomModel: Model<Room>) {}
 
-    constructor(
-        @InjectModel(Room.name) private roomModel: Model<Room>,
-    ) { }
+  async create(userId: string, createRoomDto: CreateRoomDto) {
+    createRoomDto.members.push(userId);
 
-    async create(userId: string, createRoomDto: CreateRoomDto) {
-        createRoomDto.members.push(userId);
+    const createdRoom = new this.roomModel(createRoomDto);
+    return await createdRoom.save();
+  }
 
-        const createdRoom = new this.roomModel(createRoomDto);
-        return await createdRoom.save();
-    }
-
-    async getByRequest(userId: string) {
-        return await this.roomModel.find({ members: userId }).exec();
-    }
+  async getByRequest(userId: string) {
+    return await this.roomModel.find({ members: userId }).exec();
+  }
 }

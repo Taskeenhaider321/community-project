@@ -8,21 +8,20 @@ import { AuthModule } from './auth/auth.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { ChatsModule } from './chats/chats.module';
 import { JwtModule } from '@nestjs/jwt';
+import * as mongooseAutopopulate from 'mongoose-autopopulate';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(
-      process.env.MONGO_URI,
-      {
-        connectionFactory: (connection) => {
-          connection.plugin(require('mongoose-autopopulate'));
-          return connection;
-        },
+    MongooseModule.forRoot(process.env.MONGO_URI, {
+      connectionFactory: (connection) => {
+        connection.plugin(mongooseAutopopulate);
+        console.log(`Database is connected`);
+        return connection;
       },
-    ),
+    }),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRATION },
@@ -35,4 +34,4 @@ import { JwtModule } from '@nestjs/jwt';
     ChatsModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}

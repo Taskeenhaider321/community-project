@@ -7,9 +7,11 @@ import { InterestsController } from './interests.controller';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Interest.name, schema: InterestSchema }]),
+    MongooseModule.forFeature([
+      { name: Interest.name, schema: InterestSchema },
+    ]),
   ],
   providers: [InterestCommand, InterestsService],
   controllers: [InterestsController],
 })
-export class InterestsModule { }
+export class InterestsModule {}

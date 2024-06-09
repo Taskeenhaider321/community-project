@@ -1,19 +1,34 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsString, IsNumber, IsOptional, IsEnum } from 'class-validator';
+import { Gender } from '../schemas/user.schemas'; // Corrected import path
 
-export class UpdateUserDto  {
+export class UpdateUserDto {
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  password?: string;
 
-    @ApiProperty()
-    readonly about: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  name?: string;
 
-    @ApiProperty()
-    readonly birthday: Date;
+  @ApiProperty()
+  @IsOptional()
+  @IsNumber()
+  phone_number?: number;
 
-    @ApiProperty()
-    readonly height: number;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  life_style_goals?: string;
 
-    @ApiProperty()
-    readonly weight: number;
+  @ApiProperty()
+  @IsOptional()
+  interests?: string[];
 
-    @ApiProperty()
-    readonly interests: number[];
+  @ApiProperty({ enum: Gender })
+  @IsOptional()
+  @IsEnum(Gender)
+  gender?: Gender;
 }
