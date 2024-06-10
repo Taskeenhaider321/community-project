@@ -26,6 +26,7 @@ export class UsersService {
     try {
       return await createdUser.save();
     } catch (error) {
+      console.log(error);
       throw new BadRequestException(error.message);
     }
   }
