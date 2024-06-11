@@ -26,9 +26,13 @@ async function bootstrap() {
 
   // Regular HTTP CORS configuration
   const corsOptions: CorsOptions = {
-    origin: ['*'], // or specify your frontend URL(s) here
+    origin: [
+      '*',
+      'http://localhost:4000',
+      'http://localhost:3000',
+      'http://localhost:800',
+    ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    credentials: true,
   };
 
   // Enable CORS with options
@@ -37,12 +41,16 @@ async function bootstrap() {
   // Configure Socket.IO with CORS
   const socketIoOptions: Partial<ServerOptions> = {
     cors: {
-      origin: '*',
+      origin: [
+        '*',
+        'http://localhost:4000',
+        'http://localhost:3000',
+        'http://localhost:800',
+      ],
       methods: ['GET', 'POST'],
-      credentials: true,
     },
     path: '/chats',
-    serveClient: true,
+    serveClient: false,
   };
 
   // Use the custom WebSocket adapter
