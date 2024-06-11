@@ -223,7 +223,7 @@ export default function Home() {
                     onClick={handleSendMessage}
                     src={sendIcon}
                     alt=""
-                    className="w-8"
+                    className="w-8 cursor-pointer"
                   />
                 )}
               </div>
