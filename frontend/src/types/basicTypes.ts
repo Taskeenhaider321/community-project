@@ -23,3 +23,10 @@ export type userType = {
     createdAt : string,
     updatedAt : string
   }
+
+  export type roomType = {
+    _id? : string,
+    type? : string,
+    name? : string,
+    members? : userType[]
+  }

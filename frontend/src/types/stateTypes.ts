@@ -1,5 +1,8 @@
-import { userType } from "./basicTypes"
+import { roomType, userType } from "./basicTypes"
 
 export type stateType = {
-    user : userType
+    user : userType,
+    allUsers : userType[],
+    rooms : roomType[],
+    selectedRoom : roomType
 }
