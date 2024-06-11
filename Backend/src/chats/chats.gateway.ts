@@ -22,7 +22,7 @@ export class ChatsGateway {
   @WebSocketServer()
   private server: Server;
 
-  @SubscribeMessage('create')
+  @SubscribeMessage('send')
   async create(
     @ConnectedSocket() client,
     @MessageBody() createChatDto: CreateChatDto,
@@ -30,7 +30,7 @@ export class ChatsGateway {
     const senderId = client.handshake.user._id.toString();
     const chat = await this.chatsService.create(senderId, createChatDto);
 
-    this.server.emit('new-chat', chat);
+    this.server.emit('new-message', chat);
   }
 
   afterInit(client: Socket) {
