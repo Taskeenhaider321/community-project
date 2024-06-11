@@ -2,6 +2,11 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import { Provider} from "react-redux";
+import { store } from "@/redux/store";
+import { useRouter } from "next/navigation";
+import { stateType } from "@/types/stateTypes";
+import { useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,7 +15,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
+  
 
   return (
     <html lang="en">
@@ -21,8 +26,9 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
           <Toaster />
-            {children}
-          
+        <Provider store={store}>
+          {children}
+        </Provider>
       </body>
     </html>
   );

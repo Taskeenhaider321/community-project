@@ -5,34 +5,92 @@ import loginIllustration from "../../../public/images/loginIllustreation.png";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Option, Select } from "@material-tailwind/react";
 import Link from "next/link";
-import { userType } from "@/types/basicTypes";
+import { interestType, userType } from "@/types/basicTypes";
 import axios from "axios";
 import { backendUrl } from "@/constants";
 import toast from "react-hot-toast";
+import { setUser } from "@/redux/slices/userSlice";
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { stateType } from "@/types/stateTypes";
+import Cookies from "js-cookie";
 
 export default function SignUp() {
   const [pageHeight, setPageHeight] = useState(0);
-
-  const [formData, setFormData] = useState<userType>({interests : [""]});
+  const [interests, setIneterests] = useState<interestType[]>([]);
+  const [formData, setFormData] = useState<userType>({ interests: [""] });
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const router = useRouter();
   const updateFormData = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  const user = useSelector((state: stateType) => state.user);
+  const userToken = Cookies.get("userToken");
+  const dispatch = useDispatch();
+  const checkLogin = async () => {
+    await axios
+      .get(backendUrl + "/auth/me", {
+        headers: {
+          accept: "*/*",
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
+      .then((res) => {
+        dispatch(setUser(res.data));
+        router.push("/");
+      })
+      .catch((err) => {
+        console.log(err);
+        router.push("/login");
+      });
+  };
+
+
+
+  useEffect(() => {
+    if (
+      userToken &&
+      (JSON.stringify(user) === JSON.stringify({}) || user === null)
+    ) {
+      checkLogin();
+    }
+
+    axios
+      .get(backendUrl + "/interests")
+      .then((res) => {
+        setIneterests(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {});
+  }, []);
 
   const registerUser = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (confirmPassword === formData.password) {
-      setSubmitting(true)
+      setSubmitting(true);
+      console.log(formData);
+
       axios
-        .post(`${backendUrl}/auth/register`, formData)
+        .post(`${backendUrl}/auth/register`, {
+          ...formData,
+          phone_number: Number(formData?.phone_number),
+        })
         .then((res) => {
           console.log(res);
+
+          dispatch(setUser(res.data.user));
+          Cookies.set("userToken", res.data.data.token);
+          // cookies().set('userToken', res.data.token, {expires : 1})
+          router.push("/");
         })
         .catch((err) => {
           console.log(err);
-        }).finally(()=> setSubmitting(false));
+        })
+        .finally(() => setSubmitting(false));
     } else {
       toast.error("confirm password not matched!");
     }
@@ -164,8 +222,8 @@ export default function SignUp() {
                     <option selected disabled>
                       Select
                     </option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
                     <option value="other">other</option>
                   </select>
                 </div>
@@ -206,8 +264,9 @@ export default function SignUp() {
                   <select
                     id="large"
                     name="interests"
-                    value={formData?.interests[0]}
                     onChange={(e) => {
+                      console.log(e.target.value);
+
                       setFormData({ ...formData, interests: [e.target.value] });
                     }}
                     required
@@ -216,10 +275,13 @@ export default function SignUp() {
                     <option selected disabled>
                       Select
                     </option>
-                    <option value="Technology">Technology</option>
-                    <option value="Tourism">Tourism</option>
-                    <option value="Sports">Sports</option>
-                    <option value="others">others</option>
+                    {interests?.map((interestObj: interestType) => (
+                      <option value={interestObj._id}>
+                        {interestObj.name}
+                      </option>
+                    ))}
+
+                   
                   </select>
                 </div>
               </div>

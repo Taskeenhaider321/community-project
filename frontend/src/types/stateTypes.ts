@@ -1,3 +1,5 @@
+import { userType } from "./basicTypes"
+
 export type stateType = {
-    currentTab : string
+    user : userType
 }

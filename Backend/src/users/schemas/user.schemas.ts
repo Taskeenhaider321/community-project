@@ -8,6 +8,7 @@ export type UserDocument = HydratedDocument<User>;
 export enum Gender {
   Male = 'male',
   Female = 'female',
+  Other = 'other',
 }
 
 @Schema({
