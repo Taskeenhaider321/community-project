@@ -1,25 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { IoAdapter } from '@nestjs/platform-socket.io';
-import { INestApplicationContext } from '@nestjs/common';
-import { ServerOptions } from 'socket.io';
 import { SwaggerConfig } from './config/docs/swagger.config';
 import { ValidateInputPipe } from './config/pipe/validate.pipe';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
-
-// Custom WebSocket Adapter
-class CustomSocketIoAdapter extends IoAdapter {
-  private options: Partial<ServerOptions>;
-
-  constructor(app: INestApplicationContext, options?: Partial<ServerOptions>) {
-    super(app);
-    this.options = options;
-  }
-
-  createIOServer(port: number, options?: Partial<ServerOptions>): any {
-    return super.createIOServer(port, { ...options, ...this.options });
-  }
-}
+import { WsAdapter } from '@nestjs/platform-ws';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -38,16 +22,7 @@ async function bootstrap() {
   // Enable CORS with options
   app.enableCors(corsOptions);
 
-  // Configure Socket.IO with CORS
-  const socketIoOptions: Partial<ServerOptions> = {
-    cors: {
-      origin: ['*'],
-      methods: ['GET', 'POST'],
-    },
-  };
-
-  // Use the custom WebSocket adapter
-  app.useWebSocketAdapter(new CustomSocketIoAdapter(app, socketIoOptions));
+  app.useWebSocketAdapter(new WsAdapter(app));
 
   // Swagger configuration
   SwaggerConfig.config(app);
