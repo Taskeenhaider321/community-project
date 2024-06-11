@@ -2,9 +2,22 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerConfig } from './config/docs/swagger.config';
 import { ValidateInputPipe } from './config/pipe/validate.pipe';
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const corsOptions: CorsOptions = {
+    origin: [
+      'https://week-7-8-blogia-client.vercel.app',
+      'http://localhost:3001',
+      'http://localhost:3000',
+    ], // or specify your frontend URL(s) here
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  };
+
+  // Enable CORS with options
+  app.enableCors(corsOptions);
 
   // Swagger configuration
   SwaggerConfig.config(app);

@@ -78,4 +78,8 @@ export class UsersService {
       data: updatedUser,
     };
   }
+
+  async findAll() {
+    return this.userModel.find().exec();
+  }
 }
