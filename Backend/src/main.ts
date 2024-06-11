@@ -41,16 +41,9 @@ async function bootstrap() {
   // Configure Socket.IO with CORS
   const socketIoOptions: Partial<ServerOptions> = {
     cors: {
-      origin: [
-        '*',
-        'http://localhost:4000',
-        'http://localhost:3000',
-        'http://localhost:800',
-      ],
+      origin: ['*'],
       methods: ['GET', 'POST'],
     },
-    path: '/chats',
-    serveClient: false,
   };
 
   // Use the custom WebSocket adapter
