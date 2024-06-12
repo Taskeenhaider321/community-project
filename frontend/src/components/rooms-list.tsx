@@ -31,6 +31,7 @@ export default function RoomsList() {
 
   useEffect(() => {
     if (allRooms?.length === 0) {
+      setTimeout(fetchRooms, 3000);
       fetchRooms();
     }
   }, []);
