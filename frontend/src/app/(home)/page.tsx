@@ -24,7 +24,7 @@ export default function Home() {
   const userToken = Cookies.get("userToken");
   const [socket, setSocket] = useState<Socket | null>(null);
   useEffect(() => {
-    const socket = io("http://localhost:3000/chats", {
+    const socket = io("http://localhost:4000", {
       auth: {
         token: userToken,
       },

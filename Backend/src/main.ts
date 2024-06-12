@@ -38,7 +38,7 @@ async function bootstrap() {
 
   // DTO validation pipe configuration
   app.useGlobalPipes(new ValidateInputPipe());
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(process.env.PORT || 4000);
   console.log(`The server is running at port ${process.env.PORT}`);
 }
 bootstrap();
