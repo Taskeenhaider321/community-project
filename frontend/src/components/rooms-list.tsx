@@ -33,7 +33,7 @@ export default function RoomsList() {
     if (allRooms?.length === 0) {
       fetchRooms();
     }
-  });
+  }, []);
 
   return (
     <>

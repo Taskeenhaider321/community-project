@@ -18,35 +18,42 @@ import { getRoomChats } from "@/API/chats";
 export default function Home() {
   const currentRoom = useSelector((state: stateType) => state.selectedRoom);
   const currentUser = useSelector((state: stateType) => state.user);
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const [messages, setMessages] = useState<any>([]);
+  const [messages, setMessages] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
-  const userToken = Cookies.get("userToken");
 
+  const userToken = Cookies.get("userToken");
+  const [socket, setSocket] = useState<Socket | null>(null);
   useEffect(() => {
-    const socket = io("http://localhost:800/chats", {
+    const socket = io("http://localhost:3000", {
       auth: {
         token: userToken,
       },
     });
 
-    setSocket(socket);
+    console.log(socket);
 
-    socket.on("new-message", (message: any) => {
-      setMessages((prevMessages: any) => [...prevMessages, message]);
-      checkChats()
-    });
+    setSocket(socket);
 
     return () => {
       socket.disconnect();
     };
   }, []);
 
-  const checkChats = async ()=>{
-    const newChat = await getRoomChats(Cookies.get('userToken'), currentRoom._id)
+  socket?.on("new-message", (message: any) => {
+    console.log(message);
+
+    setMessages((prevMessages: any) => [...prevMessages, message]);
+    checkChats();
+  });
+
+  const checkChats = async () => {
+    const newChat = await getRoomChats(
+      Cookies.get("userToken"),
+      currentRoom._id
+    );
     console.log(newChat);
-    
-  }
+  };
+
   const handleSendMessage = () => {
     if (socket && newMessage.length > 0) {
       const messageData = {
@@ -118,22 +125,16 @@ export default function Home() {
                   alt=""
                 />
                 <div className="px-4 mb-2 radius-without-left-top max-w-[70%] py-2 bg-[#F5F6F7] text-[#333333]">
-                  Message contenet here Message contenet here Message contenet
-                  here Message contenet here Message contenet here Message
-                  contenet here Message contenet here Message contenet here
-                  Message contenet here Message contenet here Message contenet
-                  here Message contenet here Message contenet here Message
-                  contenet here
+                  new message
                 </div>
               </div>
+
               <div className="w-full flex flex-row gap-4">
-                {/* <Image src={chatPerson} className=" w-12 rounded-lg h-12" alt="" /> */}
                 <div className="px-4 max-w-[70%] ms-16 mb-2 radius-without-left-top py-2 bg-[#F5F6F7] text-[#333333]">
                   Message contenet here
                 </div>
               </div>
               <div className=" w-full flex flex-row  gap-4">
-                {/* <Image src={chatPerson} className=" w-12 rounded-lg h-12" alt="" /> */}
                 <div className="px-4 max-w-[70%] radius-without-left-top ms-16 mb-2 py-2 bg-[#F5F6F7] text-[#333333]">
                   Message contenet here Message contenet here Message contenet
                   here Message contenet here Message contenet here Message
@@ -154,13 +155,11 @@ export default function Home() {
                 </div>
               </div>
               <div className=" w-full flex flex-row-reverse gap-4 items-start">
-                {/* <Image src={chatPerson} className=" w-12 rounded-lg h-12" alt="" /> */}
                 <div className="px-4 max-w-[70%] radius-without-right-top me-16 mb-2 h-10 py-2 bg-[#615EF0] text-[#FFFFFF]">
                   Message contenet here
                 </div>
               </div>
               <div className=" w-full flex flex-row-reverse gap-4 items-start">
-                {/* <Image src={chatPerson} className=" w-12 rounded-lg h-12" alt="" /> */}
                 <div className="px-4 max-w-[70%] radius-without-right-top me-16 mb-2 py-2 bg-[#615EF0] text-[#FFFFFF]">
                   Message contenet here Message contenet here Message contenet
                   here Message contenet here Message contenet here Message
@@ -171,7 +170,6 @@ export default function Home() {
                 </div>
               </div>
               <div className=" w-full flex flex-row-reverse gap-4 items-start">
-                {/* <Image src={chatPerson} className=" w-12 rounded-lg h-12" alt="" /> */}
                 <div className="px-4 max-w-[70%] me-16 radius-without-right-top mb-2 py-2 bg-[#615EF0] text-[#FFFFFF]">
                   Message contenet here Message contenet here Message contenet
                   here Message contenet here Message contenet here Message
@@ -188,16 +186,6 @@ export default function Home() {
                   alt=""
                 />
                 <div className="px-4 mb-2 radius-without-left-top max-w-[70%] py-2 bg-[#F5F6F7] text-[#333333]">
-                  Message contenet here
-                </div>
-              </div>
-              <div className=" w-full mt-4 justify-start flex flex-row-reverse gap-4 items-start">
-                <Image
-                  src={chatPerson}
-                  className=" w-12 rounded-lg h-12"
-                  alt=""
-                />
-                <div className="px-4 h-10 max-w-[70%] radius-without-right-top py-2 bg-[#615EF0] text-[#FFFFFF]">
                   Message contenet here
                 </div>
               </div>
