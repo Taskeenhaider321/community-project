@@ -12,8 +12,11 @@ import { UseGuards } from '@nestjs/common';
 import { WsJwtAuthGuard } from 'src/config/guard/ws-jwt-auth.guard';
 import { wsAuthMiddleware } from 'src/config/middleware/ws-auth.middleware';
 
-@WebSocketGateway(800, {
-  namespace: '/chats',
+@WebSocketGateway({
+  cors: {
+    origin: '*',
+    credentials: true,
+  },
 })
 @UseGuards(WsJwtAuthGuard)
 export class ChatsGateway {

@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { SwaggerConfig } from './config/docs/swagger.config';
 import { ValidateInputPipe } from './config/pipe/validate.pipe';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
-import { WsAdapter } from '@nestjs/platform-ws';
+// import { WsAdapter } from '@nestjs/platform-ws';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,7 +22,16 @@ async function bootstrap() {
   // Enable CORS with options
   app.enableCors(corsOptions);
 
-  app.useWebSocketAdapter(new WsAdapter(app));
+  // Configure Socket.IO with CORS
+  // const socketIoOptions: Partial<ServerOptions> = {
+  //   cors: {
+  //     origin: ['*'],
+  //     methods: ['GET', 'POST'],
+  //   },
+  // };
+
+  // Use the custom WebSocket adapter
+  // app.useWebSocketAdapter(new WsAdapter(app));
 
   // Swagger configuration
   SwaggerConfig.config(app);
