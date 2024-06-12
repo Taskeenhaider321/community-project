@@ -13,6 +13,7 @@ import { WsJwtAuthGuard } from 'src/config/guard/ws-jwt-auth.guard';
 import { wsAuthMiddleware } from 'src/config/middleware/ws-auth.middleware';
 
 @WebSocketGateway(800, {
+  namespace: '/chats',
   cors: {
     origin: '*',
     credentials: true,
