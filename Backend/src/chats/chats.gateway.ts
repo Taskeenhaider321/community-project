@@ -12,7 +12,7 @@ import { UseGuards } from '@nestjs/common';
 import { WsJwtAuthGuard } from 'src/config/guard/ws-jwt-auth.guard';
 import { wsAuthMiddleware } from 'src/config/middleware/ws-auth.middleware';
 
-@WebSocketGateway({
+@WebSocketGateway(800, {
   cors: {
     origin: '*',
     credentials: true,
