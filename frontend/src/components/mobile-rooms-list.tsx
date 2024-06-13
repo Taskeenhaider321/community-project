@@ -12,8 +12,9 @@ import { roomType, userType } from "@/types/basicTypes";
 import { stateType } from "@/types/stateTypes";
 import SkeletonLoader from "./skeletonLoader";
 import RoomBox from "./roomBox";
+import AddPersonalRoomMobile from "./mobile-add-people";
 
-export default function RoomsList() {
+export default function MobileRoomsList() {
   const [loading, setLoading] = useState(true);
   const allRooms = useSelector((state: stateType) => state.rooms);
   const dispatch = useDispatch();
@@ -37,9 +38,9 @@ export default function RoomsList() {
 
   return (
     <>
-      <div className="ps-4 hidden lg:block pe-2 py-2 w-full lg:h-[68%] h-[75%] overflow-y-scroll">
+      <div className="ps-4 pe-2 lg:hidden block py-2 w-full lg:h-[68%] h-[80%] overflow-y-scroll">
         {/* Single Chat Person Box  */}
-        {(loading && allRooms?.length === 0)  ? (
+        {(loading && allRooms?.length === 0) ? (
           <SkeletonLoader />
         ) : (
           <>
@@ -53,7 +54,7 @@ export default function RoomsList() {
           </>
         )}
       </div>
-      <AddPersonalRoom />
+      <AddPersonalRoomMobile />
     </>
   );
 }

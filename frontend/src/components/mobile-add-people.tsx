@@ -16,7 +16,7 @@ import chatAdd from "../../public/svgs/chat-add.svg";
 import SkeletonLoader from "./skeletonLoader";
 import { updateRooms } from "@/redux/slices/roomsSlice";
 
-export default function AddPersonalRoom() {
+export default function AddPersonalRoomMobile() {
   const [add, setAdd] = useState(false);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -53,7 +53,7 @@ export default function AddPersonalRoom() {
   return (
     <>
       {add && (
-        <div className="  fixed top-0 left-0 w-screen h-screen backdrop-blur flex justify-center items-center pt-10">
+        <div className=" fixed top-0 left-0 w-screen h-screen backdrop-blur flex justify-center items-center pt-10">
           <div className="h-[85%] w-[500px] overflow-y-scroll max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             <div className="flex items-center justify-between mb-4">
               <h5 className="text-xl flex justify-start gap-2 cursor-pointer flex-row items-center font-bold leading-none text-gray-900 dark:text-white">
@@ -161,7 +161,7 @@ export default function AddPersonalRoom() {
           </div>
         </div>
       )}
-      <div className=" hidden lg:block px-8 pt-2 h-[10%]">
+      <div className=" lg:hidden px-8 pt-2 h-[10%]">
         <button
           onClick={() => setAdd(true)}
           type="button"

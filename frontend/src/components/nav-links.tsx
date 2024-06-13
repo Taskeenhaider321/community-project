@@ -15,7 +15,7 @@ export default function NavLinks() {
   
 
   return (
-    <div className="flex flex-col justify-center w-full gap-8 items-start">
+    <div className="flex lg:flex-col flex-row md:justify-center justify-start w-full md:gap-8 items-start">
       <div className="w-full cursor-pointer">
         <Link href={"/"}>
           {currentPath === "/" ? (

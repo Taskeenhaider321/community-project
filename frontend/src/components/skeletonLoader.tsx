@@ -4,7 +4,7 @@ const SkeletonLoader = () => {
   return (
     <div
       role="status"
-      className="max-w-md p-4 h-full space-y-4  divide-y divide-gray-200 rounded  animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700"
+      className="w-full p-4 h-full space-y-4  divide-y divide-gray-200 rounded  animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700"
     >
       <div className="flex items-center justify-between">
         <div>

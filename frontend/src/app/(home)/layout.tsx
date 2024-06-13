@@ -52,17 +52,17 @@ export default function RootLayout({
   }, [userToken]);
 
   return (
-    <div className="flex flex-row h-screen fixed top-0 left-0 w-screen">
-      <div className="h-screen shadow-[4px_-4px_4px_0px_#E3E3E340] flex flex-col justify-between  p-5 md:w-24">
-        <div className="flex flex-col gap-10">
-          <div className=" h-14 w-14 flex justify-center items-center text-white font-bold text-2xl font-family-asap rounded-xl bg-[#615EF0]">
+    <div style={{height : '100vh'}} className="flex lg:flex-row flex-col h-screen fixed top-0 left-0 w-screen">
+      <div className="lg:h-screen h-[15%] shadow-[4px_4px_4px_0px_#E3E3E340] flex lg:flex-col flex-col-reverse  lg:justify-between justify-end lg:py-5 py-1 gap-2  p-5 lg:w-24 w-full">
+        <div className="flex lg:flex-col w-full flex-row lg:gap-10 gap-2">
+          <div className=" hidden h-14 w-14 lg:flex justify-center items-center text-white font-bold text-2xl font-family-asap rounded-xl bg-[#615EF0]">
             <span className={`${asap.className}`}>Q</span>
           </div>
           <NavLinks />
         </div>
 
-        <div className="flex flex-col justify-center w-full gap-4 items-start">
-          <div className=" w-[48px] mx-auto border-2 cursor-pointer border-[#8C8C8C] py-2 rounded-full">
+        <div className="flex lg:flex-col flex-row mb-2 md:mb-0 justify-end lg:justify-center w-full lg:gap-4 gap-2 items-start">
+          <div className=" w-[48px] lg:mx-auto border-2 cursor-pointer border-[#8C8C8C] py-2 rounded-full">
             <Image
               className="mx-auto w-7"
               src={notificationIcon}
@@ -70,7 +70,7 @@ export default function RootLayout({
             />
           </div>
 
-          <div className="w-full cursor-pointer ">
+          <div className="lg:w-full cursor-pointer ">
             <Image
               className="mx-auto w-[50px] rounded-full"
               src={chatPerson}
