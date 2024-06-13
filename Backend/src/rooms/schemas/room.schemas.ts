@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Types } from 'mongoose';
 import { RoomType } from '../enums/room-type.enum';
-import { User } from 'src/users/schemas/user.schemas';
+import { User } from '../../users/schemas/user.schemas';
 
 @Schema({
   timestamps: true,

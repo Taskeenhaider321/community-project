@@ -3,7 +3,7 @@ import { RoomsService } from './rooms.service';
 import { RoomsController } from './rooms.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Room, RoomSchema } from './schemas/room.schemas';
-import { ChatsModule } from 'src/chats/chats.module';
+import { ChatsModule } from '../chats/chats.module';
 
 @Module({
   imports: [

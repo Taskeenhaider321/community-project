@@ -8,7 +8,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schemas';
 import { Model } from 'mongoose';
-import { PasswordHashHelper } from 'src/helper/hash/password-hash.helper';
+import { PasswordHashHelper } from '../helper/hash/password-hash.helper';
 
 @Injectable()
 export class UsersService {

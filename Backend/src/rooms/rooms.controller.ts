@@ -11,9 +11,9 @@ import {
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { ApiBearerAuth, ApiParam } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/config/guard/jwt-auth.guard';
-import { GetChatDto } from 'src/chats/dto/get-chat.dto';
-import { ChatsService } from 'src/chats/chats.service';
+import { JwtAuthGuard } from '../config/guard/jwt-auth.guard';
+import { GetChatDto } from '../chats/dto/get-chat.dto';
+import { ChatsService } from '../chats/chats.service';
 
 @Controller('rooms')
 export class RoomsController {

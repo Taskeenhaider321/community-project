@@ -9,8 +9,8 @@ import { ChatsService } from './chats.service';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { Server, Socket } from 'socket.io';
 import { UseGuards } from '@nestjs/common';
-import { WsJwtAuthGuard } from 'src/config/guard/ws-jwt-auth.guard';
-import { wsAuthMiddleware } from 'src/config/middleware/ws-auth.middleware';
+import { WsJwtAuthGuard } from '../config/guard/ws-jwt-auth.guard';
+import { wsAuthMiddleware } from '../config/middleware/ws-auth.middleware';
 
 @WebSocketGateway(800, {
   namespace: '/chats',
