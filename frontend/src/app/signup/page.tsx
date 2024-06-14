@@ -31,19 +31,18 @@ export default function SignUp() {
   const dispatch = useDispatch();
   const checkLogin = async () => {
     await axios
-      .get(backendUrl + "/auth/me", {
+      .get(backendUrl + "/auth-me", {
         headers: {
           accept: "*/*",
           Authorization: `Bearer ${userToken}`,
         },
       })
       .then((res) => {
-        dispatch(setUser(res.data));
+        dispatch(setUser(res.data.user));
         router.push("/");
       })
       .catch((err) => {
         console.log(err);
-        router.push("/login");
       });
   };
 
@@ -75,7 +74,7 @@ export default function SignUp() {
       console.log(formData);
 
       axios
-        .post(`${backendUrl}/auth/register`, {
+        .post(`${backendUrl}/sign-up`, {
           ...formData,
           phone_number: Number(formData?.phone_number),
         })
@@ -83,7 +82,7 @@ export default function SignUp() {
           console.log(res);
 
           dispatch(setUser(res.data.user));
-          Cookies.set("userToken", res.data.data.token);
+          Cookies.set("userToken", res.data.token);
           // cookies().set('userToken', res.data.token, {expires : 1})
           router.push("/");
         })

@@ -1,8 +1,9 @@
-import { roomType, userType } from "./basicTypes"
+import { messageType, roomType, userType } from "./basicTypes"
 
 export type stateType = {
     user : userType,
     allUsers : userType[],
     rooms : roomType[],
-    selectedRoom : roomType
+    selectedRoom : roomType,
+    currentMessages : messageType[]
 }

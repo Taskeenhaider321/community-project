@@ -3,7 +3,7 @@
 import Image from "next/image";
 import chatPerson from "../../public/images/chat-person.jpg";
 import { useEffect, useState } from "react";
-import { getRooms } from "@/API/rooms";
+import { getPersonalRooms} from "@/API/rooms";
 import AddPersonalRoom from "./add-personal-room";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +22,7 @@ export default function MobileRoomsList() {
 
   const fetchRooms = async () => {
     console.log("calling rooms");
-    const newRooms = await getRooms(Cookies.get("userToken"));
+    const newRooms = await getPersonalRooms(Cookies.get("userToken"));
     console.log("new rooms");
     console.log(newRooms);
     dispatch(updateRooms(newRooms));

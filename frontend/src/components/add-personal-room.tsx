@@ -7,7 +7,7 @@ import { userType } from "@/types/basicTypes";
 import { useDispatch, useSelector } from "react-redux";
 import { stateType } from "@/types/stateTypes";
 import { getAllUsers } from "@/API/users";
-import { createRoomAPI, getRooms } from "@/API/rooms";
+import { createRoomAPI, getPersonalRooms} from "@/API/rooms";
 import Cookies from "js-cookie";
 import { setAllUsers } from "@/redux/slices/allUsers";
 import userSvg from "../../public/svgs/user.svg";
@@ -26,6 +26,8 @@ export default function AddPersonalRoom() {
   const getUsers = async () => {
     users?.length > 0 ? setRefreshing(true) : setLoading(true);
     const newUsers = await getAllUsers(Cookies.get("userToken"));
+    console.log(newUsers);
+    
     dispatch(setAllUsers(newUsers));
     setLoading(false);
     setRefreshing(false);
@@ -43,7 +45,7 @@ export default function AddPersonalRoom() {
         [users[index]._id],
         "personal"
       );
-      const newRooms = await getRooms(Cookies.get("userToken"));
+      const newRooms = await getPersonalRooms(Cookies.get("userToken"));
       dispatch(updateRooms(newRooms));
       setAdd(false);
       setAdding(-1);
@@ -58,7 +60,7 @@ export default function AddPersonalRoom() {
             <div className="flex items-center justify-between mb-4">
               <h5 className="text-xl flex justify-start gap-2 cursor-pointer flex-row items-center font-bold leading-none text-gray-900 dark:text-white">
                 All Users{" "}
-                {!refreshing && !loading ? (
+                {(!refreshing) ? (
                   <Image
                     onClick={getUsers}
                     className=" w-8 h-8"
@@ -67,7 +69,7 @@ export default function AddPersonalRoom() {
                   />
                 ) : (
                   <>
-                    {refreshing && !loading && (
+                    {(refreshing && !loading) && (
                       <div
                         className="inline-block ms-2 text-[#615EF0] h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
                         role="status"

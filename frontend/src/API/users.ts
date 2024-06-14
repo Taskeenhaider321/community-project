@@ -7,13 +7,15 @@ export const getAllUsers = async (userToken: string | undefined) => {
   console.log("getting Users");
 
   const response = await axios
-    .get(backendUrl + "/users/all", {
+    .get(backendUrl + "/all-users", {
       headers: {
         accept: "*/*",
         Authorization: `Bearer ${userToken}`,
       },
     })
     .then((res) => {
+      console.log(res);
+      
       return res.data;
     })
     .catch((err) => {

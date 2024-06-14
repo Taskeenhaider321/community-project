@@ -10,6 +10,7 @@ export type userType = {
     createdAt? : string,
     updatedAt? : string,
     password_key? : string
+    user? : any
   }
 
   export type loginDataType = {
@@ -28,5 +29,15 @@ export type userType = {
     _id? : string,
     type? : string,
     name? : string,
-    members? : userType[]
+    members? : userType[],
+    recentMessages? : messageType[]
+  }
+
+
+  export type messageType = {
+    room? : string,
+    _id? : string,
+    content? : string,
+    sender? : string,
+    timestamp : string | number | Date
   }

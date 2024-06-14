@@ -27,7 +27,7 @@ export default function LogIn() {
   const userToken = Cookies.get('userToken');
   const checkLogin = async () =>  {
     await axios
-    .get(backendUrl + "/auth/me", {
+    .get(backendUrl + "/auth-me", {
       headers: {
         accept: "*/*",
         Authorization: `Bearer ${userToken}`,
@@ -39,7 +39,6 @@ export default function LogIn() {
     })
     .catch((err) => {
       console.log(err);
-      router.push("/login");
     });
   }
 
@@ -53,12 +52,12 @@ export default function LogIn() {
     e.preventDefault();
     setSubmitting(true);
     axios
-      .post(`${backendUrl}/auth/login`, formData)
+      .post(`${backendUrl}/login`, formData)
       .then((res) => {
         console.log(res);
-        console.log(res.data.data.user);
-        dispatch(setUser(res.data.data.user))
-        Cookies.set('userToken', res.data.data.token, {expires : 1})
+        console.log(res.data.user);
+        dispatch(setUser(res.data.user))
+        Cookies.set('userToken', res.data.token, {expires : 2})
         router.push("/");
       })
       .catch((err) => {

@@ -7,7 +7,7 @@ import { userType } from "@/types/basicTypes";
 import { useDispatch, useSelector } from "react-redux";
 import { stateType } from "@/types/stateTypes";
 import { getAllUsers } from "@/API/users";
-import { createRoomAPI, getRooms } from "@/API/rooms";
+import { createRoomAPI, getPersonalRooms} from "@/API/rooms";
 import Cookies from "js-cookie";
 import { setAllUsers } from "@/redux/slices/allUsers";
 import userSvg from "../../public/svgs/user.svg";
@@ -43,7 +43,7 @@ export default function AddPersonalRoomMobile() {
         [users[index]._id],
         "personal"
       );
-      const newRooms = await getRooms(Cookies.get("userToken"));
+      const newRooms = await getPersonalRooms(Cookies.get("userToken"));
       dispatch(updateRooms(newRooms));
       setAdd(false);
       setAdding(-1);

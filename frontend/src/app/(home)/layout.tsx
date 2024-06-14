@@ -25,14 +25,13 @@ export default function RootLayout({
   const user = useSelector((state: stateType) => state.user);
   const userToken = Cookies.get('userToken');
   const checkLogin = async () =>  {
-    await axios.get(backendUrl + "/auth/me", {
+    await axios.get(backendUrl + "/auth-me", {
       headers: {
         accept: "*/*",
         Authorization: `Bearer ${userToken}`,
       },
     })
     .then((res) => {
-      console.log(res);
       
       dispatch(setUser(res.data));
       router.push("/");

@@ -2,12 +2,12 @@
 import axios from "axios";
 import { backendUrl } from "../constants";
 
-export const getRooms = async (userToken: string | undefined) => {
+export const getPersonalRooms = async (userToken: string | undefined) => {
   console.log("getting rooms");
   console.log(userToken);
 
     const result = await axios
-      .get(backendUrl + "/rooms", {
+      .get(backendUrl + "/personal-rooms", {
         headers: {
           accept: "*/*",
           Authorization: `Bearer ${userToken}`,
@@ -40,7 +40,7 @@ export const createRoomAPI = async (
       : { name, members, type };
 
   const response = await axios
-    .post(backendUrl + "/rooms", data, {
+    .post(backendUrl + "/create-room", data, {
       headers: {
         accept: "*/*",
         Authorization: `Bearer ${userToken}`,

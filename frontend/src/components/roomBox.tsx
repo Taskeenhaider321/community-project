@@ -7,17 +7,18 @@ import Image from "next/image";
 import { getRoomChats } from "@/API/chats";
 import Cookies from "js-cookie";
 import { selectRoom } from "@/redux/slices/roomsSlice";
+import { addNewMessages, updateMessages } from "@/redux/slices/messagesSlice";
 
 const RoomBox = (props: { room: roomType }) => {
   const { room } = props;
   const dispatch = useDispatch();
-  const currentUser = useSelector((state: stateType) => state.user);
+  const currentUser = useSelector((state: stateType) => state.user.user);
   const getChats = async () => {
+    dispatch(addNewMessages(room.recentMessages || []));
     dispatch(selectRoom(room));
-    const chats = await getRoomChats(Cookies.get("userToken"), room?._id);
-    console.log("chats recieved");
-    console.log(chats);
   };
+  const recentMessage =
+    room.recentMessages && room.recentMessages[room.recentMessages?.length - 1];
   return (
     <div
       onClick={getChats}
@@ -33,11 +34,17 @@ const RoomBox = (props: { room: roomType }) => {
                   (member: userType) => member._id !== currentUser._id
                 )?.name}
           </h4>
-          <p className="font-semibold text-sm text-[#8C8C8C]">Recent Message</p>
+          <p className="font-semibold text-sm text-[#8C8C8C]">
+            {recentMessage?.content || "No messages yet"}
+          </p>
         </div>
       </div>
       <div className="w-1/5 p-1 flex flex-end">
-        <p className="w-full text-gray-400 text-end">30m</p>
+        <p className="w-full text-gray-400 text-end">
+          {recentMessage
+            ? new Date(recentMessage?.timestamp).toLocaleTimeString()
+            : ""}
+        </p>
       </div>
     </div>
   );
