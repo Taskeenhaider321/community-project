@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { stateType } from "@/types/stateTypes";
 import Cookies from 'js-cookie';
 import { setUser } from "@/redux/slices/userSlice";
+import toast from "react-hot-toast";
 
 export default function LogIn() {
   const [pageHeight, setPageHeight] = useState(0);
@@ -39,6 +40,7 @@ export default function LogIn() {
     })
     .catch((err) => {
       console.log(err);
+      toast.error('Invalid credentials')
     });
   }
 
@@ -52,7 +54,7 @@ export default function LogIn() {
     e.preventDefault();
     setSubmitting(true);
     axios
-      .post(`${backendUrl}/login`, formData)
+      .post(`${backendUrl}/log-in`, formData)
       .then((res) => {
         console.log(res);
         console.log(res.data.user);
@@ -62,6 +64,7 @@ export default function LogIn() {
       })
       .catch((err) => {
         console.log(err);
+        toast.error('Wrong Credentials')
       })
       .finally(() => setSubmitting(false));
   };

@@ -29,7 +29,7 @@ export default function Home() {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    const socketInstance = io("http://localhost:9000", {
+    const socketInstance = io("https://community-project-backend.onrender.com", {
       auth: {
         token: userToken,
       },
@@ -137,7 +137,56 @@ export default function Home() {
                   </div>
                 </div>
                 <div className=" w-full flex flex-col h-[80%] overflow-y-scroll gap-1 p-6">
-                  <div className=" flex mt-4 flex-row items-start gap-4 w-full">
+                {messages?.map((message, index) => {
+                return (
+                  <>
+                    {message.sender === currentUser?._id ? (
+                      <>
+                        {messages[index - 1]?.sender === currentUser?._id ? (
+                          <div className=" w-full flex flex-row-reverse gap-4 items-start">
+                            <div className="px-4 max-w-[70%] radius-without-right-top me-16 mb-2 py-2 bg-[#615EF0] text-[#FFFFFF]">
+                              {message.content}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className=" w-full mt-4 justify-start flex flex-row-reverse gap-4 items-start">
+                            <Image
+                              src={chatPerson}
+                              className=" w-12 rounded-lg h-12"
+                              alt=""
+                            />
+                            <div className="px-4 h-10 max-w-[70%] radius-without-right-top py-2 bg-[#615EF0] text-[#FFFFFF]">
+                              {message.content}
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {messages[index - 1]?.sender === currentUser?._id ? (
+                          <div className=" flex mt-4 flex-row items-start gap-4 w-full">
+                            <Image
+                              src={chatPerson}
+                              className=" w-12 rounded-lg h-12"
+                              alt=""
+                            />
+                            <div className="px-4 mb-2 radius-without-left-top max-w-[70%] py-2 bg-[#F5F6F7] text-[#333333]">
+                              {message.content}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="w-full flex flex-row gap-4">
+                            <div className="px-4 max-w-[70%] ms-16 mb-2 radius-without-left-top py-2 bg-[#F5F6F7] text-[#333333]">
+                              {message.content}
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </>
+                );
+              })}
+                  {/* <div className=" flex mt-4 flex-row items-start gap-4 w-full">
                     <Image
                       src={chatPerson}
                       className=" w-12 rounded-lg h-12"
@@ -207,7 +256,7 @@ export default function Home() {
                     <div className="px-4 mb-2 radius-without-left-top max-w-[70%] py-2 bg-[#F5F6F7] text-[#333333]">
                       Message contenet here
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className=" h-[12%] w-full flex flex-row px-8 items-center gap-4 justify-start">
                   <div className=" w-[4%]">
@@ -227,6 +276,7 @@ export default function Home() {
                       }}
                       onChange={(e) => setNewMessage(e.target.value)}
                       type="text"
+                      placeholder="Type Here.."
                       className="w-[90%] focus:outline-none"
                     />
                     {newMessage?.length > 0 && (
@@ -356,6 +406,7 @@ export default function Home() {
                   }}
                   onChange={(e) => setNewMessage(e.target.value)}
                   type="text"
+                  placeholder="Type Here"
                   className="w-[90%] focus:outline-none"
                 />
                 {newMessage?.length > 0 && (

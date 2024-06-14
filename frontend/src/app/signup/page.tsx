@@ -46,8 +46,6 @@ export default function SignUp() {
       });
   };
 
-
-
   useEffect(() => {
     if (
       userToken &&
@@ -55,16 +53,6 @@ export default function SignUp() {
     ) {
       checkLogin();
     }
-
-    axios
-      .get(backendUrl + "/interests")
-      .then((res) => {
-        setIneterests(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {});
   }, []);
 
   const registerUser = (e: FormEvent<HTMLFormElement>) => {
@@ -88,6 +76,7 @@ export default function SignUp() {
         })
         .catch((err) => {
           console.log(err);
+          toast.error('error in sign up!')
         })
         .finally(() => setSubmitting(false));
     } else {
@@ -274,13 +263,14 @@ export default function SignUp() {
                     <option selected disabled>
                       Select
                     </option>
-                    {interests?.map((interestObj: interestType) => (
+                    {/* {interests?.map((interestObj: interestType) => (
                       <option value={interestObj._id}>
                         {interestObj.name}
                       </option>
-                    ))}
+                    ))} */}
 
-                   
+                    <option value="cricket">Cricket</option>
+                    <option value="coding">Coding</option>
                   </select>
                 </div>
               </div>

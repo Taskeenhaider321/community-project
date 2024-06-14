@@ -52,16 +52,18 @@ module.exports.signUp = async (req, res) => {
 module.exports.logIn = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await userModel.find({ email });
+    const user = await userModel.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: "User not exist" });
     }
+    console.log(password);
+    console.log(user);
     const passwordCorrect = passwordHash.verify(password, user.password);
     if (!passwordCorrect) {
       return res.status(400).json({ message: "Wrong Password!" });
     }
 
-    const token = jwt.sign(user._id, process.env.authenticationKey);
+    const token = jwt.sign({id : user._id}, process.env.authenticationKey);
 
     res.status(200).json({ user, token });
   } catch (error) {

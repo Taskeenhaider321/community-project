@@ -31,7 +31,7 @@ const RoomBox = (props: { room: roomType }) => {
             {room?.type === "group"
               ? room?.name
               : room?.members?.find(
-                  (member: userType) => member._id !== currentUser._id
+                  (member: userType) => member._id !== currentUser?._id
                 )?.name}
           </h4>
           <p className="font-semibold text-sm text-[#8C8C8C]">

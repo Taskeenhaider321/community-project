@@ -20,10 +20,7 @@ export default function RoomsList() {
   const currentUser = useSelector((state: stateType) => state.user);
 
   const fetchRooms = async () => {
-    console.log("calling rooms");
     const newRooms = await getPersonalRooms(Cookies.get("userToken"));
-    console.log("new rooms");
-    console.log(newRooms);
     dispatch(updateRooms(newRooms));
     setLoading(false);
   };
