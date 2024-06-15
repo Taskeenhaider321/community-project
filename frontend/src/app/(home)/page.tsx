@@ -31,18 +31,21 @@ export default function Home() {
   const chatBoxRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-      const chatBox = chatBoxRef.current;
-      if (chatBox) {
-          chatBox.scrollTop = chatBox.scrollHeight;
-      }
+    const chatBox = chatBoxRef.current;
+    if (chatBox) {
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
   }, []);
 
   useEffect(() => {
-    const socketInstance = io("https://community-project-backend.onrender.com", {
-      auth: {
-        token: userToken,
-      },
-    });
+    const socketInstance = io(
+      "https://community-project-backend.onrender.com",
+      {
+        auth: {
+          token: userToken,
+        },
+      }
+    );
 
     socketInstance.on("receive-message", (message) => {
       const roomId = message.room;
@@ -72,7 +75,6 @@ export default function Home() {
     socket?.emit("join-room", currentRoom._id);
   }, [currentRoom, socket]);
 
-
   const handleSendMessage = () => {
     if (socket && newMessage.length > 0) {
       const messageData = {
@@ -81,11 +83,12 @@ export default function Home() {
         senderId: currentUser?._id,
       };
       socket.emit("send-message", messageData);
-      
 
       setNewMessage("");
     }
   };
+  console.log(currentRoom);
+
   return (
     <>
       <div className=" lg:w-[25%] h-[80%] lg:h-screen w-full border-r-2 border-[#F5F6F7]">
@@ -145,56 +148,65 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-                <div ref={chatBoxRef} className=" w-full flex flex-col h-[80%] overflow-y-scroll gap-1 p-6">
-                {messages?.map((message, index) => {
-                return (
-                  <>
-                    {message.sender === currentUser?._id ? (
+                <div
+                  ref={chatBoxRef}
+                  className=" w-full flex flex-col h-[80%] overflow-y-scroll gap-1 p-6"
+                >
+                  {messages?.map((message, index) => {
+                    
+                    return (
                       <>
-                        {messages[index - 1]?.sender === currentUser?._id ? (
-                          <div className=" w-full flex flex-row-reverse gap-4 items-start">
-                            <div className="px-4 max-w-[70%] radius-without-right-top me-16 mb-2 py-2 bg-[#615EF0] text-[#FFFFFF]">
-                              {message.content}
-                            </div>
-                          </div>
+                        {message.sender === currentUser?._id ? (
+                          <>
+                            {messages[index - 1]?.sender ===
+                            currentUser?._id ? (
+                              <div className=" w-full flex flex-row-reverse gap-4 items-start">
+                                <div className="px-4 max-w-[70%] radius-without-right-top me-16 mb-2 py-2 bg-[#615EF0] text-[#FFFFFF]">
+                                  {message.content}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className=" w-full mt-4 justify-start flex flex-row-reverse gap-4 items-start">
+                                <Image
+                                  src={chatPerson}
+                                  className=" w-12 rounded-lg h-12"
+                                  alt=""
+                                />
+                                <div className="px-4 h-10 max-w-[70%] radius-without-right-top py-2 bg-[#615EF0] text-[#FFFFFF]">
+                                  {message.content}
+                                </div>
+                              </div>
+                            )}
+                          </>
                         ) : (
-                          <div className=" w-full mt-4 justify-start flex flex-row-reverse gap-4 items-start">
-                            <Image
-                              src={chatPerson}
-                              className=" w-12 rounded-lg h-12"
-                              alt=""
-                            />
-                            <div className="px-4 h-10 max-w-[70%] radius-without-right-top py-2 bg-[#615EF0] text-[#FFFFFF]">
-                              {message.content}
-                            </div>
-                          </div>
+                          <>
+                            {messages[index - 1]?.sender ===
+                            currentRoom?.members?.find(
+                              (member: userType) =>
+                                member._id !== currentUser._id
+                            )?._id ? (
+                              <div className="w-full flex flex-row gap-4">
+                                <div className="px-4 max-w-[70%] ms-16 mb-2 radius-without-left-top py-2 bg-[#F5F6F7] text-[#333333]">
+                                  {message.content}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className=" flex mt-4 flex-row items-start gap-4 w-full">
+                                <Image
+                                  src={chatPerson}
+                                  className=" w-12 rounded-lg h-12"
+                                  alt=""
+                                />
+                                <div className="px-4 mb-2 radius-without-left-top max-w-[70%] py-2 bg-[#F5F6F7] text-[#333333]">
+                                  {message.content}
+                                </div>
+                              </div>
+                            )}
+                          </>
                         )}
                       </>
-                    ) : (
-                      <>
-                        {messages[index - 1]?.sender === currentUser?._id ? (
-                          <div className=" flex mt-4 flex-row items-start gap-4 w-full">
-                            <Image
-                              src={chatPerson}
-                              className=" w-12 rounded-lg h-12"
-                              alt=""
-                            />
-                            <div className="px-4 mb-2 radius-without-left-top max-w-[70%] py-2 bg-[#F5F6F7] text-[#333333]">
-                              {message.content}
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="w-full flex flex-row gap-4">
-                            <div className="px-4 max-w-[70%] ms-16 mb-2 radius-without-left-top py-2 bg-[#F5F6F7] text-[#333333]">
-                              {message.content}
-                            </div>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </>
-                );
-              })}
+                    );
+                  })}
                 </div>
                 <div className=" h-[12%] w-full flex flex-row px-8 items-center gap-4 justify-start">
                   <div className=" w-[4%]">
@@ -306,24 +318,28 @@ export default function Home() {
                       </>
                     ) : (
                       <>
-                        {messages[index - 1]?.sender === currentUser?._id ? (
-                          <div className=" flex mt-4 flex-row items-start gap-4 w-full">
-                            <Image
-                              src={chatPerson}
-                              className=" w-12 rounded-lg h-12"
-                              alt=""
-                            />
-                            <div className="px-4 mb-2 radius-without-left-top max-w-[70%] py-2 bg-[#F5F6F7] text-[#333333]">
-                              {message.content}
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="w-full flex flex-row gap-4">
-                            <div className="px-4 max-w-[70%] ms-16 mb-2 radius-without-left-top py-2 bg-[#F5F6F7] text-[#333333]">
-                              {message.content}
-                            </div>
-                          </div>
-                        )}
+                         {messages[index - 1]?.sender ===
+                            currentRoom?.members?.find(
+                              (member: userType) =>
+                                member._id !== currentUser._id
+                            )?._id ? (
+                              <div className="w-full flex flex-row gap-4">
+                                <div className="px-4 max-w-[70%] ms-16 mb-2 radius-without-left-top py-2 bg-[#F5F6F7] text-[#333333]">
+                                  {message.content}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className=" flex mt-4 flex-row items-start gap-4 w-full">
+                                <Image
+                                  src={chatPerson}
+                                  className=" w-12 rounded-lg h-12"
+                                  alt=""
+                                />
+                                <div className="px-4 mb-2 radius-without-left-top max-w-[70%] py-2 bg-[#F5F6F7] text-[#333333]">
+                                  {message.content}
+                                </div>
+                              </div>
+                            )}
                       </>
                     )}
                   </>
