@@ -19,7 +19,6 @@ module.exports.checkAuthenticity = async (token) => {
 };
 
 module.exports.getIdFromToken = async (token) => {
-  console.log(token);
   let tokenToProceed;
   if (token.startsWith("Bearer")) {
     tokenToProceed = token.replace("Bearer ", "");
@@ -30,7 +29,6 @@ module.exports.getIdFromToken = async (token) => {
     tokenToProceed,
     process.env.authenticationKey
   );
-  console.log(decoded);
   return decoded?.id;
 };
 
@@ -41,7 +39,6 @@ module.exports.signUp = async (req, res) => {
     const newUser = new userModel({ ...req.body, password: hashedPassword });
     await newUser.save();
     const token = jwt.sign({ id: newUser._id }, process.env.authenticationKey);
-    console.log(token);
     res.status(200).json({ user: newUser, token });
   } catch (error) {
     console.log(error);
@@ -56,8 +53,6 @@ module.exports.logIn = async (req, res) => {
     if (!user) {
       return res.status(400).json({ message: "User not exist" });
     }
-    console.log(password);
-    console.log(user);
     const passwordCorrect = passwordHash.verify(password, user.password);
     if (!passwordCorrect) {
       return res.status(400).json({ message: "Wrong Password!" });

@@ -1,19 +1,19 @@
 const roomModel = require("../models/roomModel");
 const { getIdFromToken, checkAuthenticity } = require("./userController");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
 // Function to get rooms with recent 10 messages
 const getRoomsWithRecentMessages = async (userId, type) => {
   try {
     const rooms = await roomModel.aggregate([
-      { $match: { type : type, members: new mongoose.Types.ObjectId(userId) } },
+      { $match: { type: type, members: new mongoose.Types.ObjectId(userId) } },
       {
         $lookup: {
-          from: 'users',
-          localField: 'members',
-          foreignField: '_id',
-          as: 'members'
-        }
+          from: "users",
+          localField: "members",
+          foreignField: "_id",
+          as: "members",
+        },
       },
       {
         $lookup: {
@@ -47,25 +47,31 @@ module.exports.createRoom = async (req, res) => {
     console.log(req.body);
     const authenticated = checkAuthenticity(req.header("Authorization"));
     const currentUserId = await getIdFromToken(req.header("Authorization"));
-    if (req.body.type === "personal" && currentUserId === req.body.members[0]) {
+    if (
+      req.body.type === "personal" &&
+      req.body.members.includes(currentUserId)
+    ) {
       console.log("Room creation with yourself is not allowed.");
       return res
         .status(200)
         .json({ message: "Room creation with yourself is not allowed" });
     }
-
+    console.log([...req.body.members, currentUserId]);
     const roomExist = await roomModel.findOne({
       type: "personal",
-      members: [...req.body.members, currentUserId],
+      members: { $all: [...req.body.members, currentUserId] }
     });
+    console.log(roomExist);
 
     if (roomExist) {
       console.log("personal room already exist of these members");
+      console.log(roomExist);
       return res
         .status(200)
         .json({ message: "room already exist with these members" });
     }
     if (authenticated) {
+      console.log('creating room');
       const newRoom = new roomModel({
         ...req.body,
         members: [...req.body.members, currentUserId],
@@ -84,8 +90,8 @@ module.exports.createRoom = async (req, res) => {
 module.exports.getPersonalRooms = async (req, res) => {
   try {
     const userId = await getIdFromToken(req.header("Authorization"));
-    const personalRooms = await getRoomsWithRecentMessages(userId, 'personal');
-    
+    const personalRooms = await getRoomsWithRecentMessages(userId, "personal");
+
     res.status(200).json(personalRooms);
   } catch (error) {
     console.log(error);
